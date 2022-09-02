@@ -12,7 +12,6 @@ export const store = configureStore( {
             serializableCheck: {
                 ignoredPaths: [
                     "exchange.specialFilter.datesInterval",
-                    "reimbursement.specialFilter.datesInterval"
                 ],
                 ignoredActions: [
                     // FIXME: FRE - I used this in order to let Date objects get inserted into the store.
@@ -21,7 +20,6 @@ export const store = configureStore( {
                     // for more information visit the following link :
                     // https://redux.js.org/faq/organizing-state#can-i-put-functions-promises-or-other-non-serializable-items-in-my-store-state
                     "exchange/changeSpecialFilterDatesInterval",
-                    "reimbursement/changeSpecialFilterDatesInterval",
                 ],
             },
         } ),
@@ -31,5 +29,3 @@ export const store = configureStore( {
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
-
-export type RootThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;

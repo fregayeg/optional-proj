@@ -8,5 +8,5 @@ export interface ISpecialFilter {
   },
   dateTypeInUse: EPossibleDateTypes | null,
   direction: string,
-  datePickeriOsOn: boolean
+  datePickerIsOn: boolean
 }

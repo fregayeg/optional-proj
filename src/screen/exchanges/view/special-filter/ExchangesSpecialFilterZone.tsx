@@ -37,7 +37,7 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
     const {specialFilter} = useRootSelector( ExchangeState.selectExchange );
     const {
         buttonOn,
-        datePickeriOsOn,
+        datePickerIsOn,
         datesInterval,
         dateTypeInUse,
         direction
@@ -49,11 +49,11 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
     // FRE - Exceptionally for iOS we use bottomsheet
     React.useEffect( () => {
         if (Platform.OS == Os.IOS) {
-            if (datePickeriOsOn && buttonOn)
+            if (datePickerIsOn && buttonOn)
                 expandBottomSheet();
         }
     }, [
-        datePickeriOsOn,
+        datePickerIsOn,
         buttonOn,
         expandBottomSheet
     ] )
@@ -82,7 +82,7 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
     const showAndroidDatePicker = ( currentMode: string = "date" ) => {
         if (
             Platform.OS == Os.ANDROID
-            && datePickeriOsOn
+            && datePickerIsOn
             && datesInterval
             && dateTypeInUse
         ) {
@@ -96,22 +96,7 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
             });
         }
     };
-    // React.useEffect( () => {
-    //     if (
-    //         Platform.OS == Os.ANDROID
-    //         && datePickeriOsOn
-    //         && datesInterval
-    //         && dateTypeInUse
-    //     ) {
-    //         DateTimePickerAndroid.open( {
-    //             value: datesInterval[dateTypeInUse],
-    //             onChange: ( e, d ) => onDatePickerChange( e, d ),
-    //             mode: "date",
-    //         } );
-    //     }
-    //
-    // }, [datePickeriOsOn] );
-
+    
 
     return (
         <View style={styles.container}>

@@ -1,5 +1,4 @@
 import { RootState } from "@redux/store";
-// import { endpoints as ExchangeEndpoints } from "../api/apiExchanges";
 import {
   createSlice,
   PayloadAction
@@ -20,7 +19,7 @@ export const specialFilterInitDates = {
 export const specialFilerInitialState :ISpecialFilter = {
   buttonOn: false,
   datesInterval: specialFilterInitDates,
-  datePickeriOsOn: false,
+  datePickerIsOn: false,
   dateTypeInUse: null,
   direction: ""
 };
@@ -58,10 +57,10 @@ export const exchangeSlice = createSlice({
     },
     // activate/deactivate special filter datepicker (ios)
     switchSpecialFilterDatePicker: (state, action: PayloadAction<number>) => {
-      const datePickerIosOn: boolean = !!action.payload
+      const datePickerIsOn: boolean = !!action.payload
       state.specialFilter = {
         ...state.specialFilter,
-        datePickeriOsOn: datePickerIosOn
+        datePickerIsOn: datePickerIsOn
       };
     },
     // define date type (in order to prepare to modify)
@@ -96,7 +95,7 @@ export const exchangeSlice = createSlice({
     initSpecialFilterZone: (state) => {
       state.specialFilter = {
         ...specialFilerInitialState,
-        datePickeriOsOn: false,
+        datePickerIsOn: false,
         buttonOn: true
       }
     }
@@ -124,9 +123,6 @@ export const exchangeSlice = createSlice({
 export const selectExchange = (state: RootState) => state.exchange;
 
 export const {
-  selectFilter,
-  loadMore,
-  initialize,
   switchSpecialFilter,
   switchSpecialFilterDatePicker,
   changeSpecialFilterDatesInterval,
