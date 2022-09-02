@@ -25,11 +25,8 @@ export function ExchangesScreen() {
       specialFilter // special button state
   } =  useRootSelector(ExchangeState.selectExchange);
 
-  const { datesInterval, dateTypeInUse } = specialFilter;
   const dispatch = useRootDispatch();
   
-  // FRE - special filter datepicker change handler for ios and android both
-
   // ref
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 

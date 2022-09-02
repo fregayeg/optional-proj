@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
     View,
     Text,
@@ -58,46 +58,45 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
         expandBottomSheet
     ] )
 
-    const onDatePickerChange = React.useCallback( ( event: unknown, selectedDate?: Date ): void => {
 
-        if (selectedDate && specialFilter.dateTypeInUse) {
+    React.useEffect(() => {
+        const onDatePickerChange = ( event: unknown, selectedDate?: Date ): void => {
 
-            let newDate = {
-                [specialFilter.dateTypeInUse]: selectedDate
-            };
+            if (selectedDate && specialFilter.dateTypeInUse) {
 
-            dispatch(
-                ExchangeState.switchSpecialFilterDatePicker( 0 )
-            );
+                let newDate = {
+                    [specialFilter.dateTypeInUse]: selectedDate
+                };
 
-            dispatch(
-                ExchangeState.changeSpecialFilterDatesInterval( {
-                    ...specialFilter.datesInterval,
-                    ...newDate
-                } )
-            );
-        }
-    }, [dateTypeInUse] );
+                dispatch(
+                    ExchangeState.switchSpecialFilterDatePicker( 0 )
+                );
 
-    const showAndroidDatePicker = ( currentMode: string = "date" ) => {
+                dispatch(
+                    ExchangeState.changeSpecialFilterDatesInterval( {
+                        ...specialFilter.datesInterval,
+                        ...newDate
+                    } )
+                );
+            }
+        };
+
         if (
             Platform.OS == Os.ANDROID
             && datePickerIsOn
             && datesInterval
             && dateTypeInUse
         ) {
-            
-            const dateToSet = datesInterval[dateTypeInUse];
-            
-            DateTimePickerAndroid.open( {
-                value: dateToSet,
-                onChange: ( e, d ) => onDatePickerChange( e, d ),
+            DateTimePickerAndroid.open({
+                value: datesInterval[dateTypeInUse],
+                onChange: (e, d) => onDatePickerChange(e, d),
                 mode: "date",
             });
         }
-    };
-    
 
+    },[datePickerIsOn]);
+    
+    
     return (
         <View style={styles.container}>
             <View style={styles.headerSection}>
@@ -146,7 +145,6 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
                         <TouchableOpacity style={styles.secondFilterOptionOneButton} onPress={() => {
                             dispatch( ExchangeState.changeSpecialFilterDateType( EPossibleDateTypes.DATE_FROM ) );
                             dispatch( ExchangeState.switchSpecialFilterDatePicker( 1 ) )
-                            if(Platform.OS == Os.ANDROID) showAndroidDatePicker("date");
                         }}>
                             <Text style={styles.secondFilterDateFrom}>
                                 {formatDate( datesInterval.dateFrom )}
@@ -162,7 +160,6 @@ function ExchangesSpecialFilterZone( componentProps: ExchangeSpecialFilterZonePr
                         <TouchableOpacity style={styles.secondFilterOptionTwoButton} onPress={() => {
                             dispatch( ExchangeState.changeSpecialFilterDateType( EPossibleDateTypes.DATE_TO ) );
                             dispatch( ExchangeState.switchSpecialFilterDatePicker( 1 ) );
-                            if(Platform.OS == Os.ANDROID) showAndroidDatePicker("date");
                         }}>
                             <Text style={styles.secondFilterDateTo}>
                                 {formatDate( datesInterval.dateTo )}

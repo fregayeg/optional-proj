@@ -32,13 +32,3 @@ export function addDays (date: Date, daysToAdd: number): Date {
   clone.setDate(clone.getDate() + daysToAdd);
   return clone;
 }
-
-/**
- * Some string dates might have this -01:00, this could make
- * working with dates difficult, this function removes that expression
- * 
- * @param dateAsString
- */
-export function removeUtcExpression(dateAsString: string){
-  return dateAsString.substr( 0, dateAsString.indexOf(' '));
-}

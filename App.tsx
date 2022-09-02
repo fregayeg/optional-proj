@@ -4,6 +4,9 @@ import { store } from '@redux/store';
 import { Provider as ReactReduxProvider } from 'react-redux';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ExchangesScreen } from "@app/screen/exchanges/view/ExchangesScreen";
+import { LogBox } from "react-native";
+
+LogBox.ignoreAllLogs();
 
 /**
  * App view with view providers
