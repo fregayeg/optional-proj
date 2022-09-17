@@ -32,3 +32,15 @@ export function addDays (date: Date, daysToAdd: number): Date {
   clone.setDate(clone.getDate() + daysToAdd);
   return clone;
 }
+
+/**
+ * Remove days from a date object
+ *
+ *  @param date
+ * @param daysToRemove
+ */
+export function removeDays (date: Date, daysToRemove: number): Date {
+  const clone = new Date(date.getTime());
+  clone.setDate(clone.getDate() - daysToRemove);
+  return clone;
+}

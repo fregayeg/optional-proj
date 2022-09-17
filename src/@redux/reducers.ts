@@ -1,8 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import exchange from "@app/screen/exchanges/state/exchangeSlice";
+import { item } from "@app/screen/item/state";
 
-
-export default combineReducers({
-    exchange
-});
+export default combineReducers({ item });

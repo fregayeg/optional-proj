@@ -1,8 +1,4 @@
-import {
-    configureStore,
-    ThunkAction,
-    Action
-} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import reducers from "./reducers";
 
 export const store = configureStore( {
@@ -11,7 +7,7 @@ export const store = configureStore( {
         getDefaultMiddleware( {
             serializableCheck: {
                 ignoredPaths: [
-                    "exchange.specialFilter.datesInterval",
+                    "item.specialFilter.datesInterval",
                 ],
                 ignoredActions: [
                     // FIXME: FRE - I used this in order to let Date objects get inserted into the store.
