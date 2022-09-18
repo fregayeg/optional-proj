@@ -49,16 +49,16 @@ export function getVarKeyByCode(code: string): ItemStatus | string {
 
   switch (code) {
     case StatusCode.NW: {
-      return "Item.status.NW"
+      return "New"
     }
     case StatusCode.PP: {
-      return "Item.status.PRF"
+      return "Partially paid"
     }
     case StatusCode.PD: {
-      return "Item.status.RF"
+      return "Paid"
     }
     default:
-      return "Item.status.ALL"
+      return "All"
   }
 }
 

@@ -52,13 +52,13 @@ export const apiInstance = createApi( {
 
                 console.log("response: ", response);
                 
-                const {totalResults, Items} = response;
+                const {totalResults, items} = response;
 
-                const newItems: Array<IItem> = map( transformItem, Items )
+                const newItems: Array<IItem> = map( transformItem, items )
 
                 return {
                     totalResults,
-                    Items: newItems
+                    items: newItems
                 }
             }
         } )

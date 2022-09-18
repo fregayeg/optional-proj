@@ -32,14 +32,14 @@ describe('list screen tests', () => {
   it('list initialization', async () => {
 
     // wrap into bottom tab navigator and navigation container
-    const ComponentToRender = () => (
+    const ComponentToRender = (
         <NavigationContainer>
           <SecuredBottomTabNavigator/>
         </NavigationContainer>
-    )
+    );
 
     // wrap inside react-redux provider
-    render(<ComponentToRender/>, {wrapper: reduxRef.wrapper});
+    render(ComponentToRender, {wrapper: reduxRef.wrapper});
 
     // get 1st screen (NOT items screen)
     const screenDashboardText = await screen.getByText(/Dashborad/, {exact: false});
@@ -47,9 +47,11 @@ describe('list screen tests', () => {
 
     // go to items screen!
     const toClick = await screen.findByText('Items');
-    fireEvent(toClick, 'press');
-    
-    await waitForElementToBeRemoved(() => screen.findByText('Loading ...'));
+    fireEvent(toClick, 'press'); // I got act() error here
+         
+    const loadingIndicator = await screen.findByText('Loading ...');
+    expect(loadingIndicator).toBeTruthy();
+    await waitForElementToBeRemoved(() => loadingIndicator);
     
   });
 });

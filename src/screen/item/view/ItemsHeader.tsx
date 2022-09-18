@@ -25,7 +25,6 @@ function ItemsHeader() {
 
   return (
     <>
-      <TextInput style={{flex: 0.95, ...styles.recherche}} placeholder={"Search..."}/>
       <TouchableOpacity
         style={{
           backgroundColor: buttonOn ? theme.colors.primaryLight : theme.colors.light,

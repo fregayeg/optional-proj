@@ -134,10 +134,10 @@ export const itemSlice = createSlice({
           const {count, loadMoreLoading} = state;
 
           if (loadMoreLoading && payload.totalResults > 5 && count >= 5)
-            state.list = state.list.concat(payload.Items);
+            state.list = state.list.concat(payload.items);
 
           else
-            state.list = payload.Items;
+            state.list = payload.items;
 
           state.totalResults = payload.totalResults;
           state.loadMoreLoading = false;

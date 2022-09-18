@@ -6,10 +6,10 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import useCachedResources from "@app/hooks/useCachedResources";
 import AppNavigation from "@app/navigation";
 import { store } from '@redux/store';
-// import "react-native-url-polyfill/auto";
-// import server from "@app/tests/mock-server";
-//
-// server.listen({onUnhandledRequest: "bypass"});
+import "react-native-url-polyfill/auto";
+import server from "@app/tests/mock-server";
+
+server.listen({onUnhandledRequest:"bypass"});
 
 LogBox.ignoreAllLogs();
 
