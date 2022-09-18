@@ -3,6 +3,7 @@ import WsConstants from "@app/tests/mock-server/data/wsConstants";
 import { WsParam } from "@app/screen/item/api/itemsConstants";
 import items from "./data/items";
 import { API_BASE_URL } from "@app/constants/defaultConfig";
+import { IApiItem } from "@app/screen/item/model/IApiItem";
 
 const handlers = [
 
@@ -21,34 +22,34 @@ const handlers = [
 
       let responseBody;
 
-      // if (status) {
-      // console.log("item <parameter> received : ", ...);
+      console.log("item param received : ", paramStatus);
 
-      // TODO
-      // let fetchedList: Array<IApiItem> = items.filter(
-      //   (Item: IApiItem) => {
-      //    
-      //     // let returnObject: boolean = false;
-      //     //
-      //     // if(paramStatus)
-      //     //   returnObject = Item.status === paramStatus;
-      //     //
-      //     // if(paramIndexFrom) {
-      //     //  
-      //     //   const indexFrom = DateTime.fromISO(paramIndexFrom);
-      //     //   console.log("indexFrom log: ", indexFrom);
-      //     // }
-      //   });
+      // TODO - use filters 
+      let fetchedList: Array<IApiItem> = items.filter(
+        (item: IApiItem) => {
+
+          let returnObject: boolean = true;
+
+          if(paramStatus)
+            returnObject = item.status === paramStatus;
+          
+          // if(paramIndexFrom) {
+          //   const indexFrom = fromISO(paramIndexFrom);
+          //   console.log("indexFrom log: ", indexFrom);
+          // }
+          
+          return returnObject;
+        });
 
       const { RESPONSE_ATTRIBUTE } = WsConstants["Item"];
       
       responseBody = {
         [RESPONSE_ATTRIBUTE.TOTAL_RESULTS]: items.length,
-        [RESPONSE_ATTRIBUTE.ITEMS]: items
+        [RESPONSE_ATTRIBUTE.ITEMS]: fetchedList
       }
 
       const response = ctx.json(responseBody);
-      console.log("items list response:  ", responseBody);
+      // console.log("items list response:  ", responseBody);
 
       ctx.status(200);
       ctx.delay(300);

@@ -26,14 +26,14 @@ import styles from "./styles";
  * 
  * @constructor
  */
-function ItemsSpecialFilter() {
+function ItemsSpecialFilter(props: {testID: string}) {
   
   /** Using Redux **/
   const { specialFilter } = useRootSelector(ItemState.selectItem);
   const {
     datePickerOn,
-    datesInterval, 
-    dateTypeInUse, 
+    datesInterval,
+    dateTypeInUse,
   } = specialFilter;
   
   const dispatch = useRootDispatch();
@@ -95,9 +95,7 @@ function ItemsSpecialFilter() {
       }
     }
 
-  },[
-    datePickerOn
-  ]);
+  },[datePickerOn]);
 
   const NO_DATE_FROM = !dateTypeInUse || !datesInterval?.dateFrom;
   const NO_DATE_TO = !dateTypeInUse || !datesInterval?.dateTo;
@@ -159,4 +157,4 @@ function ItemsSpecialFilter() {
     </View>
   );
 }
-export default React.memo(ItemsSpecialFilter);
+export default ItemsSpecialFilter;

@@ -7,6 +7,7 @@
 const { AbortController } = require('abortcontroller-polyfill/dist/cjs-ponyfill');
 import { fetch, Headers, Request, Response } from 'cross-fetch';
 import mockApiServer  from "@app/tests/mock-server";
+import "@testing-library/jest-native/extend-expect";
 
 // FRE - this is a polyfill to some global objects related to fetch
 // for details : https://github.com/reduxjs/redux-toolkit/issues/1271

@@ -50,7 +50,7 @@ export const apiInstance = createApi( {
             },
             transformResponse( response: IApiItemsDefinition, meta, arg: IApiItemsDefinitionParams ): Promise<IItemsDefinition> | IItemsDefinition {
 
-                console.log("response: ", response);
+                // console.log("response: ", response);
                 
                 const {totalResults, items} = response;
 

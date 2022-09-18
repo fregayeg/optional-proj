@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
-  TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from "react-native";
 import {
   useRootSelector,
@@ -24,20 +24,21 @@ function ItemsHeader() {
   const dispatch = useRootDispatch();
 
   return (
-    <>
+    <View >
       <TouchableOpacity
-        style={{
-          backgroundColor: buttonOn ? theme.colors.primaryLight : theme.colors.light,
-          ...styles.specialFilterButton
-        }}
+          testID={"special-btn"}
+          style={{
+            backgroundColor: buttonOn ? theme.colors.primaryLight : theme.colors.light,
+            ...styles.specialFilterButton
+          }}
 
-        onPress={() => {
-          dispatch(ItemState.switchSpecialFilter(specialFilter.buttonOn ? 0 : 1));
-        }}
+          onPress={() => {
+            dispatch(ItemState.switchSpecialFilter(specialFilter.buttonOn ? 0 : 1));
+          }}
       >
         <SlidersIcon width={20} height={20} color={theme.colors.primary}/>
       </TouchableOpacity>
-    </>
+    </View>
   )
 }
 

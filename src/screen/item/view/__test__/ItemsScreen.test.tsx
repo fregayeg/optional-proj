@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import apiInstance from "../../api/apiItems";
 import {
   screen,
@@ -37,21 +36,29 @@ describe('list screen tests', () => {
           <SecuredBottomTabNavigator/>
         </NavigationContainer>
     );
-
+    
     // wrap inside react-redux provider
-    render(ComponentToRender, {wrapper: reduxRef.wrapper});
-
+    const view = render(ComponentToRender, {wrapper: reduxRef.wrapper});
+    
     // get 1st screen (NOT items screen)
     const screenDashboardText = await screen.getByText(/Dashborad/, {exact: false});
     expect(screenDashboardText).not.toBeFalsy();
 
     // go to items screen!
-    const toClick = await screen.findByText('Items');
+    const toClick = await screen.getByText('Items');
     fireEvent(toClick, 'press'); // I got act() error here
-         
-    const loadingIndicator = await screen.findByText('Loading ...');
-    expect(loadingIndicator).toBeTruthy();
-    await waitForElementToBeRemoved(() => loadingIndicator);
+    
+    // locate "loading..." text and wait for it to disappear
+    await waitForElementToBeRemoved(() => screen.getByText('Loading ...'));
+
+    // expect special-filter button (inside ItemHeader sub-component)
+    // to be ready for use
+    const buttonSpecialFilterZone = await screen.queryByTestId("special-button");
+    expect(buttonSpecialFilterZone).toBeTruthy();
+    
+    // expect filters zone to be hidden
+    const specialFilterZone = screen.queryByText("Filters");
+    expect(specialFilterZone).toBeFalsy();
     
   });
 });

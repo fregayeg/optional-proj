@@ -91,11 +91,6 @@ export default function ItemsScreen( { navigation }: RootTabScreenProps<"Items">
     skip: apiCallOnHold,
     refetchOnMountOrArgChange: !apiCallOnHold
   });
-
-  React.useEffect(() => {
-    if(isError && error)
-      console.log("error is: ", error)
-  })
   
   /** using bottom-sheet (bs) **/
   const datePickerBottomSheetRef = React.useRef<BottomSheet>(null);
@@ -186,7 +181,7 @@ export default function ItemsScreen( { navigation }: RootTabScreenProps<"Items">
         </ScrollView>
         {
           specialFilter.buttonOn &&
-            <ItemsSpecialFilter />
+            <ItemsSpecialFilter testID={"specialFilter"}/>
         }
         {
           listIsLoading && <LoadingMsg/>
