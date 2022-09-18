@@ -10,29 +10,26 @@ import {
   useRootDispatch,
   useRootSelector
 } from "@redux/hooks";
-import * as ReimbursementState from '../../state/itemSlice';
 import {
   EPossibleDateTypes,
   SpecialFilterDates
-} from "../../model/ISpecialFilterDate";
+} from "../../model";
+import * as ItemState from '../../state/itemSlice';
 import AmountSliderContainer from "./AmountSliderContainer";
 import { EMPTY_DATE_MASK } from "../../api/itemsConstants";
 import { formatDate } from "@app/utils/date";
-import { useTranslation } from "react-i18next";
 import { Os } from "@app/constants/Os";
 import styles from "./styles";
 
 /**
- * Special (advanced) filter zone for reimbursements screen
+ * Special (advanced) filter zone
  * 
  * @constructor
  */
-function ReimbursementsSpecialFilter() {
-
-  const { t } = useTranslation('translation');
+function ItemsSpecialFilter() {
   
   /** Using Redux **/
-  const { specialFilter } = useRootSelector(ReimbursementState.selectReimbursement);
+  const { specialFilter } = useRootSelector(ItemState.selectItem);
   const {
     datePickerOn,
     datesInterval, 
@@ -61,18 +58,18 @@ function ReimbursementsSpecialFilter() {
         if (selectedDate !== oldDate) {
  
           dispatch(
-            ReimbursementState.changeSpecialFilterDatesInterval({
+            ItemState.changeSpecialFilterDatesInterval({
               ...specialFilter.datesInterval,
               ...newDateContainer
             })
           );
 
           dispatch(
-            ReimbursementState.switchSpecialFilterDatePicker(0)
+            ItemState.switchSpecialFilterDatePicker(0)
           );
 
           dispatch(
-            ReimbursementState.liberateApiCall()
+            ItemState.liberateApiCall()
           );
         }
       }
@@ -85,7 +82,7 @@ function ReimbursementsSpecialFilter() {
         && datesInterval[dateTypeInUse] instanceof Date
       ) {
 
-        dispatch(ReimbursementState.holdApiCall());
+        dispatch(ItemState.holdApiCall());
         
         DateTimePickerAndroid.open({
           value: datesInterval[dateTypeInUse] as Date,
@@ -94,7 +91,7 @@ function ReimbursementsSpecialFilter() {
         });
       } else {
         DateTimePickerAndroid.dismiss("date");
-        dispatch(ReimbursementState.liberateApiCall())
+        dispatch(ItemState.liberateApiCall())
       }
     }
 
@@ -109,13 +106,13 @@ function ReimbursementsSpecialFilter() {
     <View style={styles.container}>
       <View style={styles.headerSection}>
         <View style={styles.headerSectionTitleColumn}>
-          <Text style={styles.headerSectionTitleColumnText}>{t('Commun.filter.title')}</Text>
+          <Text style={styles.headerSectionTitleColumnText}>{"Filters"}</Text>
         </View>
         <View style={styles.headerSectionInitializeColumn}>
           <TouchableOpacity onPress={() => {
-            dispatch(ReimbursementState.initSpecialFilterZone());
+            dispatch(ItemState.initSpecialFilterZone());
           }}>
-            <Text style={styles.headerSectionInitializeColumnText}>{t('Commun.filter.reset')}</Text>
+            <Text style={styles.headerSectionInitializeColumnText}>{"Reset filters"}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -125,14 +122,14 @@ function ReimbursementsSpecialFilter() {
       <View style={styles.secondFilterSection}>
         <View style={styles.secondFilterOptionOne}>
           <View style={styles.secondFilterSecTextOne}>
-            <Text style={styles.secondFilterOptionOneText}>{t('Commun.filter.From')}</Text>
+            <Text style={styles.secondFilterOptionOneText}>{"Date from"}</Text>
           </View>
           <View
             style={styles.secondFilterOptionOneComp}>
             <TouchableOpacity
               style={styles.secondFilterOptionOneButton}
               onPress={() => {
-                dispatch(ReimbursementState.changeSpecialFilterDateType(EPossibleDateTypes.DATE_FROM));
+                dispatch(ItemState.changeSpecialFilterDateType(EPossibleDateTypes.DATE_FROM));
               }}
             >
               <Text style={styles.secondFilterDateFrom}>
@@ -144,13 +141,13 @@ function ReimbursementsSpecialFilter() {
         </View>
         <View style={styles.secondFilterOptionTwo}>
           <View style={styles.secondFilterSecTextTwo}>
-            <Text style={styles.secondFilterOptionTwoText}>{t('Commun.filter.To')}</Text>
+            <Text style={styles.secondFilterOptionTwoText}>{"Date to"}</Text>
           </View>
           <View style={styles.secondFilterOptionTwoComp}>
             <TouchableOpacity
               style={styles.secondFilterOptionTwoButton}
               onPress={() => {
-                dispatch(ReimbursementState.changeSpecialFilterDateType(EPossibleDateTypes.DATE_TO));
+                dispatch(ItemState.changeSpecialFilterDateType(EPossibleDateTypes.DATE_TO));
               }}>
               <Text style={styles.secondFilterDateTo}>
                 {NO_DATE_TO ? EMPTY_DATE_MASK : formatDate(datesInterval.dateTo)}
@@ -162,4 +159,4 @@ function ReimbursementsSpecialFilter() {
     </View>
   );
 }
-export default React.memo(ReimbursementsSpecialFilter);
+export default React.memo(ItemsSpecialFilter);

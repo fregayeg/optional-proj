@@ -1,9 +1,9 @@
 // FRE - model for state
-import { IReimbursement } from "../api/apiItems";
 import { ISpecialFilter } from "./ISpecialFilter";
+import { IItem } from "./IItem";
 
-export interface IReimbursementState {
-  list: Array<IReimbursement>,
+export interface IItemState {
+  list: Array<IItem>,
   totalResults: number,
   count: number,
   filter: string,

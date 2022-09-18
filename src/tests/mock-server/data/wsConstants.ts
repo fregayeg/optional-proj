@@ -2,7 +2,7 @@ export const Item = {
   RESPONSE_ATTRIBUTE: {
     SUCCESS: "success",
     TOTAL_RESULTS: "totalResults",
-    REIMBURSEMENTS: "reimbursements",
+    ITEMS: "items",
     ID: "id",
     AMOUNT: "amount",
     AMOUNT_PAID: "amountPaid",

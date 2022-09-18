@@ -1,21 +1,21 @@
-import { StateTypes as ReimbursementStatus } from "../model/EStateTypes";
+import { StateTypes as ItemStatus } from "../model/EStateTypes";
 import {
     Currency,
     Status,
     StatusCode
 } from "../api/itemsConstants";
 import { map } from "@app/utils/arrays";
-import {
-    IApiReimbursement,
-    IReimbursement,
-    IApiReimbursementsDefinitionParams
-} from "../api/apiItems";
 import { formatDate } from "@app/utils/date";
-import { EPossibleDateTypes } from "@app/screens/exchanges/model";
-import { ISpecialFilter } from "../model";
+import { IApiItemsDefinitionParams } from "../model/api/IApiItemsDefinitionParams";
+import { IApiItem } from "../model/IApiItem";
+import { IItem } from "../model/IItem";
+import {
+    ISpecialFilter,
+    EPossibleDateTypes
+} from "../model";
 
 // FRE - valid filter model
-export type ReimbursementFilter = {
+export type ItemFilter = {
     code: string,
     label: string
 }
@@ -24,17 +24,17 @@ export type ReimbursementFilter = {
  * FRE - determine status label by code
  * @param code
  */
-export function getStatusLabelByCode(code: string): ReimbursementStatus | string {
+export function getStatusLabelByCode(code: string): ItemStatus | string {
 
     switch (code) {
         case StatusCode.NW: {
-            return ReimbursementStatus.Nouveau
+            return ItemStatus.Nouveau
         }
         case StatusCode.PP: {
-            return ReimbursementStatus.PartiellementRembourse
+            return ItemStatus.PartiellementRembourse
         }
         case StatusCode.PD: {
-            return ReimbursementStatus.Rembourse
+            return ItemStatus.Rembourse
         }
         default:
             return "Tout"
@@ -45,7 +45,7 @@ export function getStatusLabelByCode(code: string): ReimbursementStatus | string
  * MME - determine Key of i18n dictionary by code
  * @param code
  */
-export function getVarKeyByCode(code: string): ReimbursementStatus | string {
+export function getVarKeyByCode(code: string): ItemStatus | string {
 
   switch (code) {
     case StatusCode.NW: {
@@ -65,9 +65,9 @@ export function getVarKeyByCode(code: string): ReimbursementStatus | string {
 /**
  * FRE - get valid & readable filters list
  */
-export function getFilters(): Array<ReimbursementFilter> {
+export function getFilters(): Array<ItemFilter> {
     
-    type WildFilter = [string, ReimbursementFilter]; 
+    type WildFilter = [string, ItemFilter]; 
     
     /*
     FRE - when we read entries from Status object the result will be like:
@@ -92,10 +92,8 @@ export function getFilters(): Array<ReimbursementFilter> {
     // add "ALL" filter at the beginning
     result.unshift({
         code: "ALL",
-        label: "Tout"
+        label: "All"
     })
-    
-    // console.log("filters : ", result);
     
     return result;
 }
@@ -114,7 +112,7 @@ export function getCurrencySymbolByCode(code: string) {
  * FRE - revert amount concatenated with currency symbol
  * @param item
  */
-export function getAmountFormatted(item: IReimbursement) {
+export function getAmountFormatted(item: IItem) {
     
     const itemAmount = String(item.amount);
     const currencySymbol = getCurrencySymbolByCode(item.currencyCode).symbole;
@@ -125,9 +123,10 @@ export function getAmountFormatted(item: IReimbursement) {
 
 /**
  * FRE - takes Item object from api response, and transform it
+ * 
  * @param Item
  */
-export const tranformReimbursement = (Item:IApiReimbursement): IReimbursement => {
+export const transformItem = ( Item:IApiItem): IItem => {
 
     // control on date
     const {creationDate,paymentDate,} = Item;
@@ -135,11 +134,7 @@ export const tranformReimbursement = (Item:IApiReimbursement): IReimbursement =>
     const targetDate = paymentDate ? paymentDate : creationDate;
 
     const formattedTargetDate = targetDate.split(' ')[0];
-
-    // control on amount
-    // const {amount, amountPaid} = Item;
-    // const targetAmount = amountPaid? amountPaid : amount;
-
+    
     return {
         id: Item.id,
         uniqueDate: formattedTargetDate,
@@ -159,7 +154,7 @@ export const tranformReimbursement = (Item:IApiReimbursement): IReimbursement =>
  * @param queryParams
  * @param specialFilters
  */
-export function manageSpecialFilterParams(queryParams: IApiReimbursementsDefinitionParams, specialFilters: ISpecialFilter) {
+export function manageSpecialFilterParams(queryParams: IApiItemsDefinitionParams, specialFilters: ISpecialFilter) {
 
     const {
         datesInterval,

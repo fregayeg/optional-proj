@@ -8,20 +8,16 @@ import {
   useRootDispatch
 } from "@redux/hooks";
 import SlidersIcon from "@app/components/icons/sliders/SlidersIcons";
-import * as ReimbursementState from "../state/itemSlice";
-import { useTranslation } from "react-i18next";
+import * as ItemState from "../state/itemSlice";
 import theme from "@app/constants/theme";
 import { styles } from "./styles";
 
-function ReimbursementsHeader() {
-
-  /** using translation **/
-  const { t } = useTranslation('translation');
-
+function ItemsHeader() {
+    
   /** Using Redux **/
   const {
     specialFilter,
-  } = useRootSelector(ReimbursementState.selectReimbursement);
+  } = useRootSelector(ItemState.selectItem);
 
   const { buttonOn } = specialFilter;
 
@@ -29,7 +25,7 @@ function ReimbursementsHeader() {
 
   return (
     <>
-      <TextInput style={{flex: 0.95, ...styles.recherche}} placeholder={t('Commun.search')}/>
+      <TextInput style={{flex: 0.95, ...styles.recherche}} placeholder={"Search..."}/>
       <TouchableOpacity
         style={{
           backgroundColor: buttonOn ? theme.colors.primaryLight : theme.colors.light,
@@ -37,7 +33,7 @@ function ReimbursementsHeader() {
         }}
 
         onPress={() => {
-          dispatch(ReimbursementState.switchSpecialFilter(specialFilter.buttonOn ? 0 : 1));
+          dispatch(ItemState.switchSpecialFilter(specialFilter.buttonOn ? 0 : 1));
         }}
       >
         <SlidersIcon width={20} height={20} color={theme.colors.primary}/>
@@ -46,4 +42,4 @@ function ReimbursementsHeader() {
   )
 }
 
-export default ReimbursementsHeader;
+export default ItemsHeader;

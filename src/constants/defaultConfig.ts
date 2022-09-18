@@ -1,4 +1,3 @@
-import * as Localization from "expo-localization";
 
-export const DEVICE_LOCALE = Localization.locale;
+export const API_BASE_URL = "http://localhost:3000"
 export const DATE_PATTERN = "DD/MM/YYYY";

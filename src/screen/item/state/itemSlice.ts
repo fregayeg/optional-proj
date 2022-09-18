@@ -5,14 +5,15 @@ import {
 } from "@reduxjs/toolkit";
 import { RootState } from "@redux/store";
 import * as JSUtils from "@app/utils/date";
-import { ISpecialFilter } from "../model/ISpecialFilter";
-import { SpecialFilterDates } from "../model/ISpecialFilterDate";
-import { EPossibleDateTypes } from "@app/screens/exchanges/model";
+import {
+  ISpecialFilter,
+  EPossibleDateTypes
+} from "../model";
+import { SpecialFilterDates } from "../model";
 import {
   ISpecialFilterSum,
-  IReimbursementState
+  IItemState
 } from "../model";
-import { logout } from "@app/screens/login/state/AuthSlice";
 
 export const specialFilterDatesIntervalInitState: SpecialFilterDates = {
   dateFrom: JSUtils.removeDays(new Date(), 15) ,
@@ -37,7 +38,7 @@ export const specialFilerInitialState: ISpecialFilter = {
 };
 
 // initial state
-const initialState: IReimbursementState = {
+const initialState: IItemState = {
   list: [],
   totalResults: 0,
   loadMoreLoading: false,
@@ -126,31 +127,26 @@ export const itemSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(logout,(state) => {
-        state = initialState
-        return state;
-      })
       .addMatcher(
-        apiInstance.endpoints.getReimbursements.matchFulfilled,
+        apiInstance.endpoints.getItems.matchFulfilled,
         (state, { payload }) => {
 
           const {count, loadMoreLoading} = state;
 
           if (loadMoreLoading && payload.totalResults > 5 && count >= 5)
-            state.list = state.list.concat(payload.reimbursements);
+            state.list = state.list.concat(payload.Items);
 
           else
-            state.list = payload.reimbursements;
+            state.list = payload.Items;
 
           state.totalResults = payload.totalResults;
-
           state.loadMoreLoading = false;
         }
       )
   }
 })
 
-export const selectReimbursement = (state: RootState) => state.Item;
+export const selectItem = (state: RootState) => state.item;
 
 export const {
   selectFilter,

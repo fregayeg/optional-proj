@@ -1,5 +1,5 @@
 /**
- * Reimbursements List screen created by f.regayeg and m.a.znidi on 24.06.2022
+ * items List screen
  */
 import * as React from "react";
 import {
@@ -14,14 +14,12 @@ import {
   Platform,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
   useRootDispatch,
   useRootSelector
 } from "@redux/hooks";
-import { CardViewWithoutIcon } from "@app/components/CardViewWithoutIcon";
-import { Badge } from "@app/components/Badge";
+import { CardViewWithoutIcon, Badge } from "@app/components";
 import {
   getAmountFormatted,
   getFilters,
@@ -29,30 +27,22 @@ import {
   getVarKeyByCode,
   manageSpecialFilterParams,
 } from "../state/businessUtils";
-import {
-  IReimbursement,
-  useGetReimbursementsQuery,
-} from "../api/apiItems";
 import { StatusCode } from "../api/itemsConstants";
-import * as ReimbursementState from "../state/itemSlice";
-import ReimbursementsSpecialFilter from "./special-filter/ReimbursementsSpecialFilter";
+import * as ItemState from "../state/itemSlice";
 import {
   ErrorMsg,
   LoadingMsg
 } from "./Indicators";
-import ReimbursementsHeader from "./ReimbursementsHeader";
+import ItemsHeader from "./ItemsHeader";
+import ItemsSpecialFilter from "./special-filter/ItemsSpecialFilter";
 import SpecialFilterBottomSheet from "./SpecialFilterBottomSheet";
 import { SpecialFilterDatePickerSpinner } from "./special-filter";
-import { RootStackParamList } from "@Root/types";
-import { useTranslation } from "react-i18next";
+import { RootTabScreenProps } from "@Root/types";
 import { styles } from "./styles";
 import { Os } from "@app/constants/Os";
+import { useGetItemsQuery } from "../api/apiItems";
 
-// FRE: FIXME: why this screen has same route name as DetailRemboursementScreen component under /DetailRemboursementScreen ?
-export default function ReimbursementsScreen({ navigation }: NativeStackScreenProps<RootStackParamList, 'ReimbursementsDetails'>) {
-
-  /** using translation **/
-  const { t } = useTranslation('translation');
+export default function ItemsScreen( { navigation }: RootTabScreenProps<"Items">) {
 
   /** Using Redux **/
   const {
@@ -63,7 +53,7 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
     totalResults,
     specialFilter,
     apiCallOnHold
-  } = useRootSelector(ReimbursementState.selectReimbursement);
+  } = useRootSelector(ItemState.selectItem);
 
   const {
     datePickerOn,
@@ -93,14 +83,20 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
   
   // query hook
   const {
+    error,
     isLoading,
     isError,
     isFetching,
-  } = useGetReimbursementsQuery(queryParams, {
+  } = useGetItemsQuery(queryParams, {
     skip: apiCallOnHold,
     refetchOnMountOrArgChange: !apiCallOnHold
   });
 
+  React.useEffect(() => {
+    if(isError && error)
+      console.log("error is: ", error)
+  })
+  
   /** using bottom-sheet (bs) **/
   const datePickerBottomSheetRef = React.useRef<BottomSheet>(null);
 
@@ -128,9 +124,9 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
   useFocusEffect(
     React.useCallback(() => {
       return () => {
-        dispatch(ReimbursementState.selectFilter(getFilters()[0].code)); // init button filter state
-        dispatch(ReimbursementState.switchSpecialFilter(0)); // init special filter state
-        dispatch(ReimbursementState.initSpecialFilterZone());
+        dispatch(ItemState.selectFilter(getFilters()[0].code)); // init button filter state
+        dispatch(ItemState.switchSpecialFilter(0)); // init special filter state
+        dispatch(ItemState.initSpecialFilterZone());
       }
     }, [])
   );
@@ -150,24 +146,6 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
     isFetching
   ])
   
-  // FRE - 
-  // FIXME: We can simply use "id" as navigation parameter, I think no need to pass other sensitive data.
-  //  When in another component than this one, if we need to get data from the API call return used here, 
-  //  just recall the useQuery() hook or use the redux Item's selector. 
-  const goToReimbursement = (item: IReimbursement) => {
-
-    const {id, amount, amountPaid, beneficiaryFullName , status} = item;
-    navigation.navigate("ReimbursementsDetails",
-      {
-        reimbursementsId: id,
-        amount,
-        amountPaid,
-        titular: beneficiaryFullName,
-        status
-      }
-    );
-  }
-
   /********** Rendering *********/
 
   if (isError) return <ErrorMsg />
@@ -181,7 +159,7 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
         behavior={"height"}
         style={styles.container}>
         <View style={{flexDirection: "row"}}>
-          <ReimbursementsHeader />
+          <ItemsHeader />
         </View>
         <ScrollView
           horizontal
@@ -196,11 +174,11 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
             <TouchableOpacity
               key={idx}
               onPress={() => {
-                dispatch(ReimbursementState.selectFilter(mapFilter.code));
+                dispatch(ItemState.selectFilter(mapFilter.code));
               }}
             >
               <Badge 
-                text={t(`${getVarKeyByCode(mapFilter.code)}`)} 
+                text={getVarKeyByCode(mapFilter.code)} 
                 active={mapFilter.code === filter}
               />
             </TouchableOpacity>
@@ -208,7 +186,7 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
         </ScrollView>
         {
           specialFilter.buttonOn &&
-            <ReimbursementsSpecialFilter />
+            <ItemsSpecialFilter />
         }
         {
           listIsLoading && <LoadingMsg/>
@@ -233,15 +211,15 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
                   total={getAmountFormatted(item)}
                   name={item.beneficiaryFullName}
                   date={item.uniqueDate}
-                  traducedState={Object.values(StatusCode).includes(item.status as StatusCode) ? t(`${getVarKeyByCode(item.status)}`) : t('Commun.unknown')}
+                  traducedState={Object.values(StatusCode).includes(item.status as StatusCode) ? getVarKeyByCode(item.status) : "Unknown"}
                   state={getStatusLabelByCode(item.status)}
-                  onPress={() => goToReimbursement(item)}
+                  onPress={() => {return;}}
                 />
                 {
                   (isLatestIteration && hasItemsLeft) &&
                     <Pressable
                         onPress={() => {
-                          dispatch(ReimbursementState.loadMore(list.length));
+                          dispatch(ItemState.loadMore(list.length));
                         }}
                         style={({pressed}) => ({
                           opacity: pressed ? 0.5 : 1,
@@ -249,7 +227,7 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
                           ...styles.showMore,
                         })}
                     >
-                        <Text style={styles.showMoreText}>{t('Commun.showmore')}</Text>
+                        <Text style={styles.showMoreText}>{"Show more"}</Text>
                     </Pressable>
 
                   }
@@ -268,7 +246,7 @@ export default function ReimbursementsScreen({ navigation }: NativeStackScreenPr
           <SpecialFilterBottomSheet
               containerRef={datePickerBottomSheetRef}
               onCloseHandler={() => {
-                dispatch(ReimbursementState.switchSpecialFilterDatePicker(0))
+                dispatch(ItemState.switchSpecialFilterDatePicker(0))
               }}
               customSnapPoints={[350]}
           >

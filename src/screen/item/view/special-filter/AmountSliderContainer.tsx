@@ -9,15 +9,14 @@ import {
   useRootDispatch,
   useRootSelector
 } from "@redux/hooks";
-import * as ReimbursementState from "../../state/itemSlice";
-import { specialFilerInitialState } from "../../state/itemSlice";
+import * as ItemState from "../../state/itemSlice";
 import { formatAmountSliderCaption } from "../../state/businessUtils";
 import styles from "./styles";
 
 const AmountSliderContainer = () => {
-  
+
   /** using Redux **/
-  const { specialFilter } = useRootSelector(ReimbursementState.selectReimbursement);
+  const { specialFilter } = useRootSelector(ItemState.selectItem);
   
   const { sumInterval } = specialFilter;
   
@@ -54,24 +53,23 @@ const AmountSliderContainer = () => {
   }
   
   return (
-    <View >
-      <View >
-        <Text>{t('Item.filter.slider_caption')}</Text>
+    <View>
+      <View>
+        <Text>{"Amount range:"}</Text>
         <Text>{React.useMemo(() => formatAmountSliderCaption(valuesArray),[sumInterval,valuesArray])}</Text>
       </View>
       <MultiSlider
-        
         containerStyle={{
           alignSelf: "center"
         }}
         values={Object.values(specialFilter.sumInterval)}
         onValuesChange={(newValues) => {
-          dispatch(ReimbursementState.holdApiCall());
+          dispatch(ItemState.holdApiCall());
           setNewValues(newValues);
         }}
         onValuesChangeFinish={(valuesArray) => {
           dispatch(
-            ReimbursementState.setSliderInterval({
+            ItemState.setSliderInterval({
               sumFrom: valuesArray[0],
               sumTo: valuesArray[1]
             })
@@ -79,8 +77,8 @@ const AmountSliderContainer = () => {
         }}
         sliderLength={Dimensions.get("window").width * 80 / 100}
         allowOverlap={true}
-        max={specialFilerInitialState.sumInterval.sumTo}
-        min={specialFilerInitialState.sumInterval.sumFrom}
+        max={ItemState.specialFilerInitialState.sumInterval.sumTo}
+        min={ItemState.specialFilerInitialState.sumInterval.sumFrom}
         {...sliderOtherStyles}
       />
     </View>

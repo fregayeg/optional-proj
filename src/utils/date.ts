@@ -1,23 +1,22 @@
 import moment from "moment";
-import {
-  DEVICE_LOCALE,
-  DATE_PATTERN
-} from "@app/constants/defaultConfig";
+import { DATE_PATTERN } from "@app/constants/defaultConfig";
 /**
  * Format date with default locale and pattern
  *
  * @param date
+ * @param pattern
  */
-export function formatDate(date: string | Date): string {
-  
-  let result = "N/A";
+export function formatDate(date: string | Date | null, pattern?: string): string {
 
-  moment.locale(DEVICE_LOCALE);
+  if(date ) {
+    const patternToUse = pattern ?? DATE_PATTERN;
 
-  result = moment(date).format(DATE_PATTERN);
+    const result = moment(date).format(patternToUse);
 
+    return result;
+  }
 
-  return result;
+  return "N/A"
 }
 
 

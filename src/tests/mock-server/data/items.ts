@@ -1,9 +1,4 @@
-/**
- * Reimbursements database with 13 elements - latest update on 09 / 09 / 2022 02:00 PM
- * the shown list here is based on current version in insurance system REST API
- * and our Internal Rest API. please visit: {insurance-system-api-hostname}/swagger/index.html
- */
-import { IApiReimbursement } from "@app/screens/ReimbursementsScreen/api";
+import { IApiItem } from "../../../screen/item/model/IApiItem";
 
 export default  [
   {
@@ -123,4 +118,4 @@ export default  [
     "status": "PP",
     "hasMissingDocs": false
   }
-] as Array<IApiReimbursement>
+] as Array<IApiItem>

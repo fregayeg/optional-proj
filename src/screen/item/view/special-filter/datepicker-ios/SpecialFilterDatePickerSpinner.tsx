@@ -9,7 +9,7 @@ import {
     useRootDispatch
 } from "@redux/hooks";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import * as ReimbursementState from "../../../state/itemSlice";
+import * as ItemState from "../../../state/itemSlice";
 import { ISpecialFilterSpinner, SpecialFilterDates } from "../../../model";
 import styles from "./styles";
 
@@ -19,11 +19,11 @@ import styles from "./styles";
  * @param props
  * @constructor
  */
-function ReimbursementSpecialFilterDatePickerView(props: ISpecialFilterSpinner) {
+function SpecialFilterDatePickerView(props: ISpecialFilterSpinner) {
     
     const { closeDatepickerBottomsheet } = props;
     
-    const { specialFilter } = useRootSelector(ReimbursementState.selectReimbursement);
+    const { specialFilter } = useRootSelector(ItemState.selectItem);
 
     const {
         buttonOn,
@@ -43,9 +43,7 @@ function ReimbursementSpecialFilterDatePickerView(props: ISpecialFilterSpinner) 
     
     const handleChangeOnHold = React.useCallback(( e: DateTimePickerEvent | null, selectedDate: Date | undefined) => {
         
-        dispatch(
-          ReimbursementState.holdApiCall()
-        );
+        dispatch( ItemState.holdApiCall());
         
         if (selectedDate) dateRef.current = selectedDate
     },[])
@@ -63,19 +61,15 @@ function ReimbursementSpecialFilterDatePickerView(props: ISpecialFilterSpinner) 
             if (dateRef.current !== oldDate) {
 
                 dispatch(
-                  ReimbursementState.changeSpecialFilterDatesInterval({
+                    ItemState.changeSpecialFilterDatesInterval({
                       ...specialFilter.datesInterval,
                       ...newDateContainer
                   })
                 );
 
-                dispatch(
-                  ReimbursementState.switchSpecialFilterDatePicker(0)
-                );
+                dispatch( ItemState.switchSpecialFilterDatePicker(0) );
 
-                dispatch(
-                  ReimbursementState.liberateApiCall()
-                );
+                dispatch( ItemState.liberateApiCall() );
             }
         }
     },[dateTypeInUse]);
@@ -122,4 +116,4 @@ function ReimbursementSpecialFilterDatePickerView(props: ISpecialFilterSpinner) 
     
 }
 
-export default ReimbursementSpecialFilterDatePickerView;
+export default SpecialFilterDatePickerView;

@@ -1,7 +1,6 @@
-import "node-fetch"
 import { setupServer } from 'msw/native'
 import { handlers } from './mockServerHandlers'
 
-const server = setupServer(...handlers)
+const server = setupServer(...handlers);
 
-export { server }
+export default server;

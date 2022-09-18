@@ -11,6 +11,5 @@ export interface ISpecialFilter {
     sumTo: number
   },
   dateTypeInUse: EPossibleDateTypes | null,
-  datePickerOn: boolean,
-  // sumIntervalOnHold: boolean
+  datePickerOn: boolean
 }

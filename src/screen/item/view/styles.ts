@@ -6,6 +6,7 @@ import theme from "@app/constants/theme";
 
 export const styles = StyleSheet.create({
   container: {
+    top: "6%",
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
