@@ -1,7 +1,8 @@
 import * as React from "react";
 import {
-  TouchableOpacity,
-  View
+    TouchableOpacity,
+    View,
+    Text
 } from "react-native";
 import {
   useRootSelector,
@@ -24,8 +25,9 @@ function ItemsHeader() {
   const dispatch = useRootDispatch();
 
   return (
-    <View >
+    <View>
       <TouchableOpacity
+          accessibilityLabel={"special-btn"}
           testID={"special-btn"}
           style={{
             backgroundColor: buttonOn ? theme.colors.primaryLight : theme.colors.light,
@@ -37,6 +39,7 @@ function ItemsHeader() {
           }}
       >
         <SlidersIcon width={20} height={20} color={theme.colors.primary}/>
+          <Text>Hello-Test</Text>
       </TouchableOpacity>
     </View>
   )

@@ -181,7 +181,7 @@ export default function ItemsScreen( { navigation }: RootTabScreenProps<"Items">
         </ScrollView>
         {
           specialFilter.buttonOn &&
-            <ItemsSpecialFilter testID={"specialFilter"}/>
+            <ItemsSpecialFilter />
         }
         {
           listIsLoading && <LoadingMsg/>

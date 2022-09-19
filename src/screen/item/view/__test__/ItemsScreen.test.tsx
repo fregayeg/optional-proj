@@ -5,6 +5,8 @@ import {
   render,
   fireEvent,
   waitForElementToBeRemoved,
+  act,
+  waitFor,
 } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import itemSliceReducer from "@app/screen/item/state/itemSlice";
@@ -49,16 +51,30 @@ describe('list screen tests', () => {
     fireEvent(toClick, 'press'); // I got act() error here
     
     // locate "loading..." text and wait for it to disappear
-    await waitForElementToBeRemoved(() => screen.getByText('Loading ...'));
 
+    await act(async () => {
+     await screen.getByText( 'Loading ...' );
+    })
+
+    const loadingText = await screen.queryByText( 'Loading ...' );
+    expect(loadingText).toBeFalsy();
+    
+    const specialFilterLabelText = screen.queryByText( 'Hello',{exact:false} );
+    expect(specialFilterLabelText).toBeTruthy();
+
+    // await act( async () => {
+    //   const buttonSpecialFilterZone = await screen.queryByText( "Hello-Test" );
+    //   expect( buttonSpecialFilterZone ).toBeTruthy();
+    // });
+    
     // expect special-filter button (inside ItemHeader sub-component)
     // to be ready for use
-    const buttonSpecialFilterZone = await screen.queryByTestId("special-button");
-    expect(buttonSpecialFilterZone).toBeTruthy();
+    // const buttonSpecialFilterZone = await screen.queryByTestId("special-button");
+    // expect(buttonSpecialFilterZone).toBeTruthy();
     
     // expect filters zone to be hidden
-    const specialFilterZone = screen.queryByText("Filters");
-    expect(specialFilterZone).toBeFalsy();
+    // const specialFilterZone = screen.queryByText("Filters");
+    // expect(specialFilterZone).toBeFalsy();
     
   });
 });

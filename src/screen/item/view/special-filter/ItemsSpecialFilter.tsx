@@ -26,7 +26,7 @@ import styles from "./styles";
  * 
  * @constructor
  */
-function ItemsSpecialFilter(props: {testID: string}) {
+function ItemsSpecialFilter() {
   
   /** Using Redux **/
   const { specialFilter } = useRootSelector(ItemState.selectItem);
