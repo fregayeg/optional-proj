@@ -34,6 +34,10 @@
       "eas": {
         "projectId": "935865df-54bb-4c3f-ae00-7b46d6298910"
       }
-    }
+    },
+    "plugins": [
+      "expo-community-flipper"
+    ],
+    "jsEngine": "hermes"
   }
 }
